@@ -16,8 +16,8 @@ app.use('/logos', brandLogoRoutes);
 // Routes
 app.use('/users', userRoutes);
 
-const  uri = "mongodb+srv://shahzad:root@cluster0.7mmojmt.mongodb.net/brand?retryWrites=true&w=majority";
-
+//const  uri = "mongodb+srv://shahzad:root@cluster0.7mmojmt.mongodb.net/?retryWrites=true&w=majority";
+const uri = "mongodb://shahzad:root@ac-f4w1kqp-shard-00-00.7mmojmt.mongodb.net:27017,ac-f4w1kqp-shard-00-01.7mmojmt.mongodb.net:27017,ac-f4w1kqp-shard-00-02.7mmojmt.mongodb.net:27017/?ssl=true&replicaSet=atlas-ocdiz1-shard-0&authSource=admin&retryWrites=true&w=majority";
 // Connect to MongoDB
 mongoose.connect(uri,{ useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
@@ -33,4 +33,5 @@ const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Server is listening on port ${port}`);
 });
+
 

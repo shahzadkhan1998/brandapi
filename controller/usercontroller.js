@@ -7,6 +7,7 @@ exports.signup = async (req, res) => {
   try {
     const { name, email, password } = req.body;
     const existingUser = await User.findOne({ email: req.body.email });
+    console.log(req.body);
     if (existingUser) {
       return res.status(409).json({ error: "Email already exists" });
     }
@@ -33,7 +34,11 @@ exports.login = async (req, res) => {
       return res.status(401).json({ error: "Authentication failed" });
     }
     const token = jwt.sign({ userId: user._id }, "secretKey");
-    res.json({ token, userId: user._id });
+    console.log(req.body);
+  
+    const level = user.level;
+    console.log(level);
+    res.json({ token, userId: user._id,level });
   } catch (error) {
     console.error("Failed to authenticate user:", error);
     res.status(500).json({ error: "Failed to authenticate user" });
