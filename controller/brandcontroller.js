@@ -42,7 +42,7 @@ exports.createLogo = async (req, res) => {
       res.json(logos);
     } catch (error) {
       console.error("Failed to retrieve brand logos:", error);
-      res.status(500).json({ error: "Failed to retrieve brand logos" });
+      res.status(500).json({ error: "Failed to retrieve brand logos,",error });
     }
   };
   
