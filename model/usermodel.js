@@ -5,15 +5,32 @@ const userSchema = new mongoose.Schema({
     name: {
       type: String,
       required: true,
+    
     },
     email: {
       type: String,
       required: true,
       unique: true,
+      validate: {
+        validator: function (value) {
+          // Basic email validation using a regular expression
+          return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+        },
+        message: 'Invalid email format',
+      },
+
+      
     },
     password: {
       type: String,
       required: true,
+      validate:{
+        validator: function (value) {
+          return value.length >= 8;
+        },
+        message:'Password should be at least 8 characters long',
+
+      }
     },
     level: {
       type: Number,

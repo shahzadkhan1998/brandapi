@@ -4,10 +4,13 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const brandLogoRoutes = require('./routes/brandroute.js');
 const userRoutes = require('./routes/userroute.js');
+const cors = require('cors');
 
 
 // Set up Express app
 const app = express();
+// CORS is enabled for all origins
+app.use(cors());
 // Middleware
 app.use(bodyParser.json());
 
@@ -27,11 +30,11 @@ mongoose.connect(uri,{ useNewUrlParser: true, useUnifiedTopology: true })
     console.error('Failed to connect to MongoDB:', error);
   });
 
-
+ const ipAddress = '************';
 // Start the server
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
-  console.log(`Server is listening on port ${port}`);
+  console.log(`Server is listening on http://${ipAddress}:${port}/`);
 });
 
 

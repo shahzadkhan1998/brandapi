@@ -27,11 +27,11 @@ exports.login = async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(401).json({ error: "Authentication failed" });
+      return res.status(401).json({ error: "Email not Found." });
     }
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) {
-      return res.status(401).json({ error: "Authentication failed" });
+      return res.status(401).json({ error: "Password not Matached. " });
     }
     const token = jwt.sign({ userId: user._id }, "secretKey");
     console.log(req.body);
