@@ -1,7 +1,13 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../model/usermodel.js");
+const nodemailer = require('nodemailer');
+const crypto = require('crypto');
 
+
+// Get the Gmail ID and password from environment variables
+const gmailId = process.env.GMAIL_ID;
+const gmailPassword = process.env.GMAIL_PASSWORD;
 // User Signup
 exports.signup = async (req, res) => {
   try {
@@ -137,4 +143,83 @@ exports.removeCoins = async (req, res) => {
     console.error("Failed to remove coins:", error);
     res.status(500).json({ error: "Failed to remove coins" });
   }
+
 };
+
+// Helper function to send the reset password email
+async function sendResetPasswordEmail(email, resetToken) {
+  const transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+      user: gmailId,
+      pass: gmailPassword,
+    },
+  });
+
+  const resetLink = `https://example.com/reset-password?token=${resetToken}`;
+
+  const mailOptions = {
+    from: gmailId,
+    to: email,
+    subject: 'Reset Your Password',
+    html: `<p>Hello,</p><p>You have requested to reset your password. Click the link below to reset it:</p><p><a href="${resetLink}">${resetLink}</a></p>`,
+  };
+
+  await transporter.sendMail(mailOptions);
+}
+
+// Forgot password function
+exports.forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ error: "Email not found." });
+    }
+
+    const resetToken = crypto.randomBytes(20).toString('hex');
+    user.resetToken = resetToken;
+    user.resetTokenExpires = Date.now() + 3600000; // 1 hour
+    await user.save();
+
+    await sendResetPasswordEmail(email, resetToken);
+
+    res.json({ message: "Reset password email sent." });
+  } catch (error) {
+    console.error("Failed to process forgot password request:", error);
+    res.status(500).json({ error: "Failed to process forgot password request." });
+  }
+};
+// Reset password function
+exports.resetPassword = async (req, res) => {
+  try {
+    const { resetToken, newPassword } = req.body;
+
+    const user = await User.findOne({
+      resetToken,
+      resetTokenExpires: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return res.status(400).json({ error: "Invalid or expired reset token." });
+    }
+
+    user.password = await bcrypt.hash(newPassword, 10);
+    user.resetToken = undefined;
+    user.resetTokenExpires = undefined;
+    await user.save();
+
+    res.json({ message: "Password reset successful." });
+  } catch (error) {
+    console.error("Failed to reset password:", error);
+    res.status(500).json({ error: "Failed to reset password." });
+  }
+};
+
+
+
+
+
+
+

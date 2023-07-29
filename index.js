@@ -1,4 +1,4 @@
-require('dotenv').config();
+const dotenv = require('dotenv');
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -7,6 +7,8 @@ const userRoutes = require('./routes/userroute.js');
 const cors = require('cors');
 
 
+// Load environment variables from .env file
+dotenv.config();
 // Set up Express app
 const app = express();
 // CORS is enabled for all origins
