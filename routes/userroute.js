@@ -18,9 +18,9 @@ router.patch('/coins/add', userController.addCoins);
 router.patch('/coins/remove', userController.removeCoins);
 
 // Forgot password route
-app.post('/forgot-password', authController.forgotPassword);
+app.post('/forgot-password', userController.forgotPassword);
 
 // Reset password route
-app.post('/reset-password', authController.resetPassword);
+app.post('/reset-password', userController.resetPassword);
 
 module.exports = router;
