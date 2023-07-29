@@ -149,14 +149,24 @@ exports.removeCoins = async (req, res) => {
 // Helper function to send the reset password email
 async function sendResetPasswordEmail(email, resetToken) {
   const transporter = nodemailer.createTransport({
+    debug: true,
     service: 'Gmail',
     auth: {
-      user: gmailId,
-      pass: gmailPassword,
+      user: 'sk266349@gmail.com',
+      pass: 'pcwxpqengqrvrmoe'
     },
   });
+  // Listen for 'log' event
+transporter.on('log', (log) => {
+  console.log(log.message);
+});
 
-  const resetLink = `https://example.com/reset-password?token=${resetToken}`;
+// Listen for 'error' event
+transporter.on('error', (error) => {
+  console.error('Error occurred while sending email:', error);
+});
+
+  const resetLink = `https://dull-pink-bluefish-coat.cyclic.app/reset-password?token=${resetToken}`;
 
   const mailOptions = {
     from: gmailId,
