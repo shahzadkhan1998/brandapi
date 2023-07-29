@@ -146,6 +146,8 @@ exports.removeCoins = async (req, res) => {
 
 };
 
+
+
 // Helper function to send the reset password email
 async function sendResetPasswordEmail(email, resetToken) {
   const transporter = nodemailer.createTransport({
@@ -201,6 +203,8 @@ exports.forgotPassword = async (req, res) => {
     res.status(500).json({ error: "Failed to process forgot password request." });
   }
 };
+
+
 // Reset password function
 exports.resetPassword = async (req, res) => {
   try {
@@ -219,13 +223,42 @@ exports.resetPassword = async (req, res) => {
     user.resetToken = undefined;
     user.resetTokenExpires = undefined;
     await user.save();
-
+    delete validResetTokens[resetToken];
     res.json({ message: "Password reset successful." });
   } catch (error) {
     console.error("Failed to reset password:", error);
     res.status(500).json({ error: "Failed to reset password." });
   }
 };
+
+// In a real application, you would store reset tokens and their expiration times in a database.
+const validResetTokens = {};
+
+// GET route for rendering the password reset page with the form
+exports.resetPassword('/reset-password', (req, res) => {
+  const resetToken = req.query.token;
+  if (!resetToken || !validResetTokens[resetToken]) {
+    // If the reset token is missing or not valid, you can redirect to an error page.
+    // Alternatively, you can render an error message on this page itself.
+    return res.send('Invalid or expired reset token. Please request a new password reset link.');
+  }
+
+  // Render the password reset page with the form where the user can enter their new password.
+  res.send(`
+    <html>
+      <body>
+        <form method="POST" action="/reset-password">
+          <input type="hidden" name="token" value="${resetToken}">
+          <label for="newPassword">New Password:</label>
+          <input type="password" name="newPassword" required>
+          <button type="submit">Reset Password</button>
+        </form>
+      </body>
+    </html>
+  `);
+});
+
+
 
 
 
