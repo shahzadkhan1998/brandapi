@@ -187,7 +187,7 @@ exports.forgotPassword = async (req, res) => {
     }
 
     // Generate a random OTP (6 digits)
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const otp = Math.floor(1000 + Math.random() * 9000).toString();
 
     // Save the OTP and its expiration time
     const otpExpiry = Date.now() + OTP_EXPIRY_TIME;
@@ -239,4 +239,4 @@ exports.resetPassword = async (req, res) => {
     console.error("Failed to reset password:", error);
     res.status(500).json({ error: "Failed to reset password." });
   }
-};
+}
