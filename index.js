@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const brandLogoRoutes = require('./routes/brandroute.js');
 const userRoutes = require('./routes/userroute.js');
+const paractice = require('./routes/productroute.js');
 const cors = require('cors');
 
 
@@ -18,6 +19,9 @@ app.use(bodyParser.json());
 app.use('/logos', brandLogoRoutes);
 // Routes
 app.use('/users', userRoutes);
+
+app.use('/addproduct',paractice);
+app.use('/getproduct',paractice);
 
 //const  uri = "mongodb+srv://shahzad:root@cluster0.7mmojmt.mongodb.net/?retryWrites=true&w=majority";
 const uri = "mongodb://shahzad:root@ac-f4w1kqp-shard-00-00.7mmojmt.mongodb.net:27017,ac-f4w1kqp-shard-00-01.7mmojmt.mongodb.net:27017,ac-f4w1kqp-shard-00-02.7mmojmt.mongodb.net:27017/?ssl=true&replicaSet=atlas-ocdiz1-shard-0&authSource=admin&retryWrites=true&w=majority";

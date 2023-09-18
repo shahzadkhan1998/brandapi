@@ -26,6 +26,7 @@ exports.createLogo = async (req, res) => {
       bomb: bomb,
       right: right,
     });
+    
     const savedLogo = await brandLogo.save();
     res.json(savedLogo);
   } catch (error) {
