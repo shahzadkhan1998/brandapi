@@ -1,4 +1,4 @@
-const productModel = require("../model/productModel.js");
+const productModel = require("../model/productmodel.js");
 const cloudinary = require("cloudinary").v2;
 const jwt = require("jsonwebtoken");
 const fs = require("fs");

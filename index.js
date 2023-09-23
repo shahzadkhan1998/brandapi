@@ -20,7 +20,7 @@ app.use('/logos', brandLogoRoutes);
 // Routes
 app.use('/users', userRoutes);
 
-app.use('/product',paractice);
+app.use('/product', paractice);
 
 
 //const  uri = "mongodb+srv://shahzad:root@cluster0.7mmojmt.mongodb.net/?retryWrites=true&w=majority";
