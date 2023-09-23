@@ -3,6 +3,6 @@ const router = express.Router();
 const paracticeController = require('../controller/productcontroller.js');
 
 // add lgo and description for paractice
-router.post('/',paracticeController.createProduct );
-router.get('/',paracticeController.getProduct);
+router.post('/add',paracticeController.createProduct );
+router.get('/get',paracticeController.getProduct);
 module.exports = router;
